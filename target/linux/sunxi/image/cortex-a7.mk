@@ -57,6 +57,13 @@ define Device/friendlyarm_nanopi-r1
 endef
 TARGET_DEVICES += friendlyarm_nanopi-r1
 
+define Device/majortom_h3-zero
+  DEVICE_VENDOR := MajorTom
+  DEVICE_MODEL := H3-Zero
+  SOC := sun8i-h3
+endef
+TARGET_DEVICES += majortom_h3-zero
+
 define Device/lamobo_lamobo-r1
   DEVICE_VENDOR := Lamobo
   DEVICE_MODEL := Lamobo R1

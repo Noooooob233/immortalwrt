@@ -228,6 +228,12 @@ define U-Boot/nanopi_r1s_h5
   UENV:=a64
 endef
 
+define U-Boot/h3-zero
+  BUILD_SUBTARGET:=cortexa7
+  NAME:=U-Boot for MajorTom's H3-Zero (H3)
+  BUILD_DEVICES:=majortom_h3-zero
+endef
+
 define U-Boot/pine64_plus
   BUILD_SUBTARGET:=cortexa53
   NAME:=Pine64 Plus A64
@@ -299,6 +305,7 @@ UBOOT_TARGETS := \
 	nanopi_neo2 \
 	nanopi_r1 \
 	nanopi_r1s_h5 \
+	h3-zero \
 	orangepi_zero \
 	orangepi_r1 \
 	orangepi_one \

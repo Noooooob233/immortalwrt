@@ -1,0 +1,159 @@
+From 16489be727398dc57f8ab499a3c035c85930b63e Mon Sep 17 00:00:00 2001
+From: MajorTom <493281372@qq.com>
+Date: Tue, 25 May 2021 21:01:46 +0800
+Subject: [PATCH] add h3-zero support
+
+---
+ arch/arm/dts/Makefile                   |   3 +-
+ arch/arm/dts/sun8i-h3-h3-zero.dts | 108 ++++++++++++++++++++++++
+ configs/h3-zero_defconfig               |   9 ++
+ 3 files changed, 119 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/dts/sun8i-h3-h3-zero.dts
+ create mode 100644 configs/h3-zero_defconfig
+
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 86a7c045..d47b538c 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -541,7 +541,8 @@ dtb-$(CONFIG_MACH_SUN8I_H3) += \
+	sun8i-h3-orangepi-pc.dtb \
+	sun8i-h3-orangepi-pc-plus.dtb \
+	sun8i-h3-orangepi-plus.dtb \
+-	sun8i-h3-orangepi-plus2e.dtb
++	sun8i-h3-orangepi-plus2e.dtb \
++	sun8i-h3-h3-zero.dtb
+ dtb-$(CONFIG_MACH_SUN8I_R40) += \
+ 	sun8i-r40-bananapi-m2-ultra.dtb \
+ 	sun8i-v40-bananapi-m2-berry.dtb
+diff --git a/arch/arm/dts/sun8i-h3-h3-zero.dts b/arch/arm/dts/sun8i-h3-h3-zero.dts
+new file mode 100644
+index 00000000..9091eb57
+--- /dev/null
++++ b/arch/arm/dts/sun8i-h3-h3-zero.dts
+@@ -0,0 +1,108 @@
++/dts-v1/;
++#include "sun8i-h3.dtsi"
++#include "sunxi-common-regulators.dtsi"
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++
++/ {
++	model = "MajorTom's H3 Zero";
++	compatible = "majortom,h3-zero", "allwinner,sun8i-h3";
++
++	aliases {
++		serial0 = &uart0;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		status {
++			label = "nanopi:blue:status";
++			gpios = <&pio 0 10 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++		};
++
++		pwr {
++			label = "nanopi:green:pwr";
++			gpios = <&r_pio 0 10 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++	};
++
++	r_gpio_keys {
++		compatible = "gpio-keys";
++		input-name = "k1";
++
++		k1 {
++			label = "k1";
++			linux,code = <KEY_POWER>;
++			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
++		};
++	};
++};
++
++&ehci0 {
++	status = "okay";
++};
++
++&ehci1 {
++	status = "okay";
++};
++
++&ehci2 {
++	status = "okay";
++};
++
++&ehci3 {
++	status = "okay";
++};
++
++&mmc0 {
++	bus-width = <4>;
++	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
++	status = "okay";
++	vmmc-supply = <&reg_vcc3v3>;
++};
++
++&ohci0 {
++	status = "okay";
++};
++
++&ohci1 {
++	status = "okay";
++};
++
++&ohci2 {
++	status = "okay";
++};
++
++&ohci3 {
++	status = "okay";
++};
++
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_pins_a>;
++	status = "okay";
++};
++
++&usbphy {
++	status = "okay";
++	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
++};
++
++&emac {
++	phy-handle = <&int_mii_phy>;
++	phy-mode = "mii";
++	allwinner,leds-active-low;
++	status = "okay";
++};
++
++&usb_otg {
++	status = "okay";
++	dr_mode = "peripheral";
++};
+diff --git a/configs/h3-zero_defconfig b/configs/h3-zero_defconfig
+new file mode 100644
+index 00000000..c899c436
+--- /dev/null
++++ b/configs/h3-zero_defconfig
+@@ -0,0 +1,9 @@
++CONFIG_ARM=y
++CONFIG_ARCH_SUNXI=y
++CONFIG_SPL=y
++CONFIG_MACH_SUN8I_H3=y
++CONFIG_DRAM_CLK=408
++# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
++CONFIG_DEFAULT_DEVICE_TREE="sun8i-h3-h3-zero"
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_OHCI_HCD=y
+-- 
+2.25.1
+
