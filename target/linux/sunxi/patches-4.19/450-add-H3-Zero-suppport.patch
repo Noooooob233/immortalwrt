@@ -123,21 +123,21 @@ index 000000000..e35e7351c
 +};
 +
 +&spi0 {
-+    status = "okay";
++	status = "okay";
 +
-+    st7789vw@0 {
-+            compatible = "sitronix,st7789vw";
-+            reg = <0>;
-+            spi-max-frequency = <96000000>;
-+            rotate = <0>;
-+            bgr;
-+            fps = <60>;
-+            buswidth = <8>;
-+            reset-gpios = <&pio 0 1 GPIO_ACTIVE_LOW>; /* PA1 */
-+            dc-gpios = <&pio 0 0 GPIO_ACTIVE_HIGH>; /* PA0 */
-+            debug = <0>;
-+			 status = "okay";
-+    };
++	st7789vw@0 {
++		compatible = "sitronix,st7789vw";
++		reg = <0>;
++		spi-max-frequency = <96000000>;
++		rotate = <0>;
++		bgr;
++		fps = <60>;
++		buswidth = <8>;
++		eset-gpios = <&pio 0 1 GPIO_ACTIVE_LOW>; /* PA1 */
++		dc-gpios = <&pio 0 0 GPIO_ACTIVE_HIGH>; /* PA0 */
++		debug = <0>;
++		status = "okay";
++	};
 +};
 -- 
 2.25.1
