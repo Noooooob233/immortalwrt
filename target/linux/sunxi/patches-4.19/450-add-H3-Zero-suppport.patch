@@ -5,8 +5,8 @@ Subject: [PATCH] add H3-Zero suppport
 
 ---
  arch/arm/boot/dts/Makefile                   |   1 +
- arch/arm/boot/dts/sun8i-h3-h3-zero.dts | 138 +++++++++++++++++++
- 2 files changed, 139 insertions(+)
+ arch/arm/boot/dts/sun8i-h3-h3-zero.dts | 112 +++++++++++++++++++
+ 2 files changed, 113 insertions(+)
  create mode 100644 arch/arm/boot/dts/sun8i-h3-h3-zero.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
@@ -26,7 +26,7 @@ new file mode 100644
 index 000000000..e35e7351c
 --- /dev/null
 +++ b/arch/arm/boot/dts/sun8i-h3-h3-zero.dts
-@@ -0,0 +1,138 @@
+@@ -0,0 +1,112 @@
 +#include "sun8i-h3-nanopi.dtsi"
 +
 +/ {
@@ -43,43 +43,18 @@ index 000000000..e35e7351c
 +		};
 +
 +		status {
-+			label = "h3-zero:green:status";
++			label = "h3-zero:white:status";
 +			gpios = <&pio 0 10 GPIO_ACTIVE_HIGH>; /* PA10 */
 +			linux,default-trigger = "heartbeat";
 +		};
 +	};
 +
-+	vdd_cpux: gpio-regulator {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		regulator-name = "vdd-cpux";
-+		regulator-type = "voltage";
-+		regulator-boot-on;
-+		regulator-always-on;
-+		regulator-min-microvolt = <1100000>;
-+		regulator-max-microvolt = <1300000>;
-+		regulator-ramp-delay = <50>; /* 4ms */
-+		gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
-+		gpios-states = <0x1>;
-+		states = <1100000 0x0
-+			  1300000 0x1>;
-+	};
-+
 +};
 +
-+&cpu0 {
-+	cpu-supply = <&vdd_cpux>;
-+};
-+
-+&codec {
-+	allwinner,audio-routing =
-+		"Line Out", "LINEOUT",
-+		"MIC1", "Mic",
-+		"Mic",  "MBIAS";
-+	status = "okay";
-+};
-+
-+&de {
++&mmc0 {
++	vmmc-supply = <&reg_vcc3v3>;
++	bus-width = <4>;
++	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
 +	status = "okay";
 +};
 +
@@ -87,17 +62,10 @@ index 000000000..e35e7351c
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&mmc2_8bit_pins>;
 +	vmmc-supply = <&reg_vcc3v3>;
++	vqmmc-supply = <&reg_vcc3v3>;
 +	bus-width = <8>;
 +	non-removable;
-+	cap-mmc-hw-reset;
 +	status = "okay";
-+};
-+
-+&mmc2_8bit_pins {
-+	/* Increase drive strength for DDR modes */
-+	drive-strength = <40>;
-+	/* eMMC is missing pull-ups */
-+	bias-pull-up;
 +};
 +
 +&ehci0 {
@@ -148,6 +116,12 @@ index 000000000..e35e7351c
 +	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
 +};
 +
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_pins_a>;
++	status = "okay";
++};
++
 +&spi0 {
 +    status = "okay";
 +
@@ -162,7 +136,7 @@ index 000000000..e35e7351c
 +            reset-gpios = <&pio 0 1 GPIO_ACTIVE_LOW>; /* PA1 */
 +            dc-gpios = <&pio 0 0 GPIO_ACTIVE_HIGH>; /* PA0 */
 +            debug = <0>;
-+			status = "okay";
++			 status = "okay";
 +    };
 +};
 -- 
